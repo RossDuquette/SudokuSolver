@@ -7,13 +7,13 @@ int main()
 {	
 	//initialize
 	Element* cell = new Element[81];
-	read(cell, "Impossible");
+	read(cell, "2");
 	
 	bool solved = solve(cell);
 
 	//output
 	cout << (solved ? "Successfully solved puzzle" : "Could not solve puzzle") << endl;
-	write(cell, "Impossible", solved);
+	write(cell, "2", solved);
 	delete[] cell;
 	return 0;
 }
@@ -100,7 +100,7 @@ bool check(Element* cell, int n1, int n2, int n3, int n4, int n5, int n6, int n7
 void read(Element* cell, string name)
 {
 	int num;
-	name = "Problem_" + name + ".txt";
+	name = "./Puzzles/Problem_" + name + ".txt";
 	ifstream fin;
 	fin.open(name.c_str());
 	if (fin.is_open())
@@ -116,7 +116,7 @@ void read(Element* cell, string name)
 
 void write(Element* cell, string name, bool done)
 {
-	name = "Solution_" + name + ".txt";
+	name = "./Puzzles/Solution_" + name + ".txt";
 	ofstream fout;
 	fout.open(name.c_str());
 	if (fout.is_open())
