@@ -1,3 +1,5 @@
+#include "Element.h"
+
 Element::Element()
 {
 	number = 0;
