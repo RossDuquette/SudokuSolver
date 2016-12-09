@@ -5,15 +5,17 @@
 
 int main()
 {	
+	string problemName = "2";
+	
 	//initialize
 	Element* cell = new Element[81];
-	read(cell, "2");
+	read(cell, problemName);
 	
 	bool solved = solve(cell);
 
 	//output
 	cout << (solved ? "Successfully solved puzzle" : "Could not solve puzzle") << endl;
-	write(cell, "2", solved);
+	write(cell, problemName, solved);
 	delete[] cell;
 	return 0;
 }
