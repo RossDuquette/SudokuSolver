@@ -3,20 +3,41 @@
 #include <iostream>
 #include <fstream>
 
-int main()
-{	
-	string problemName = "2";
+int main(int argc, char* argv[])
+{	if (argc == 2)
+	{
+		//Initialize filenames
+		string problemName = argv[1];
+		string solutionName = problemName;
+		int loc = problemName.find("Problem");
+		if (loc != string::npos)
+			solutionName.replace(loc, 7, "Solution");
+		else
+			solutionName = "Solution_" + solutionName;
+		
+		//Initialize Element array from file
+		Element* cell = new Element[81];
+		if (!read(cell, problemName))
+		{
+			cout << "Could not read file: " << problemName << endl;
+			delete[] cell;
+			return 0;
+		}
+			
+		//Main function call
+		bool solved = solve(cell);
 	
-	//initialize
-	Element* cell = new Element[81];
-	read(cell, problemName);
+		//Output to console and to file
+		cout << (solved ? "Successfully solved puzzle" : "Could not solve puzzle") << endl;
+		if (!write(cell, solutionName, solved))
+			cout << "Could not write to file: " << solutionName << endl;
+		delete[] cell;
+	}
+	else
+	{
+		cout << "Must include the filename of the puzzle\n";
+	}
 	
-	bool solved = solve(cell);
-
-	//output
-	cout << (solved ? "Successfully solved puzzle" : "Could not solve puzzle") << endl;
-	write(cell, problemName, solved);
-	delete[] cell;
 	return 0;
 }
 
@@ -99,10 +120,9 @@ bool check(Element* cell, int n1, int n2, int n3, int n4, int n5, int n6, int n7
 	return ret;
 }
 
-void read(Element* cell, string name)
+bool read(Element* cell, string name)
 {
 	int num;
-	name = "./Puzzles/Problem_" + name + ".txt";
 	ifstream fin;
 	fin.open(name.c_str());
 	if (fin.is_open())
@@ -112,13 +132,14 @@ void read(Element* cell, string name)
 			fin >> num;
 			cell[i].setNum(num);
 		}
+		fin.close();
+		return true;
 	}
-	fin.close();
+	return false;
 }
 
-void write(Element* cell, string name, bool done)
+bool write(Element* cell, string name, bool done)
 {
-	name = "./Puzzles/Solution_" + name + ".txt";
 	ofstream fout;
 	fout.open(name.c_str());
 	if (fout.is_open())
@@ -142,8 +163,10 @@ void write(Element* cell, string name, bool done)
 			if (i == 2 || i == 5)
 				fout << "---------------------\n";
 		}
+		fout.close();
+		return true;
 	}
-	fout.close();
+	return false;
 }
 
 bool solve(Element* cell)
