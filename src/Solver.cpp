@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+#define REC_LIMIT 15
+
 int main(int argc, char* argv[])
 {	if (argc == 2)
 	{
@@ -25,7 +27,7 @@ int main(int argc, char* argv[])
 		}
 			
 		//Main function call
-		bool solved = solve(cell);
+		bool solved = solve(cell, REC_LIMIT);
 	
 		//Output to console and to file
 		cout << (solved ? "Successfully solved puzzle" : "Could not solve puzzle") << endl;
@@ -169,8 +171,11 @@ bool write(Element* cell, string name, bool done)
 	return false;
 }
 
-bool solve(Element* cell)
+bool solve(Element* cell, int recLimit)
 {
+	if (recLimit == 0)
+		return false;
+	
 	bool changed = true;
 	while (changed)
 	{
@@ -217,7 +222,7 @@ bool solve(Element* cell)
 				memcpy(cellGuess, cell, sizeof(Element)*81);
 				cellGuess[i].setNum(guess1);
 				
-				if (solve(cellGuess))
+				if (solve(cellGuess, recLimit-1))
 				{
 					memcpy(cell, cellGuess, sizeof(Element)*81);
 					delete[] cellGuess;
@@ -227,7 +232,7 @@ bool solve(Element* cell)
 				{
 					memcpy(cellGuess, cell, sizeof(Element)*81);
 					cellGuess[i].setNum(guess2);
-					if (solve(cellGuess))
+					if (solve(cellGuess, recLimit-1))
 					{
 						memcpy(cell, cellGuess, sizeof(Element)*81);
 						delete[] cellGuess;
@@ -241,6 +246,7 @@ bool solve(Element* cell)
 				}
 			}
 		}
+		return false;
 	}
 	else
 		return true;
