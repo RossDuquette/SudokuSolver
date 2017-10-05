@@ -9,13 +9,9 @@ int main(int argc, char* argv[])
 {	if (argc == 2)
 	{
 		//Initialize filenames
-		string problemName = argv[1];
-		string solutionName = problemName;
-		int loc = problemName.find("Problem");
-		if (loc != string::npos)
-			solutionName.replace(loc, 7, "Solution");
-		else
-			solutionName = "Solution_" + solutionName;
+		string problemNumber = argv[1];
+		string problemName = ".\\Puzzles\\Problem_" + problemNumber + ".txt";
+		string solutionName = ".\\Puzzles\\Solution_" + problemNumber + ".txt";;
 		
 		//Initialize Element array from file
 		Element* cell = new Element[81];
